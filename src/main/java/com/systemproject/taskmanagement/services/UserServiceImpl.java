@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static com.systemproject.taskmanagement.services.TaskServiceImpl.unwrapTask;
+
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService{
@@ -57,11 +59,6 @@ public class UserServiceImpl implements UserService{
     }
 
     static User unwrapUser(Optional<User> entity) {
-        if (entity.isPresent()) return entity.get();
-        else throw new NoSuchElementException();
-    }
-
-    static Task unwrapTask(Optional<Task> entity) {
         if (entity.isPresent()) return entity.get();
         else throw new NoSuchElementException();
     }
