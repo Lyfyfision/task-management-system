@@ -40,6 +40,7 @@ public class TaskServiceImpl implements TaskService {
         }).orElseThrow(() -> new NoSuchElementException());
     }
 
+    //TODO: create custom exception for non-existing tasks
     @Override
     public void deleteTask(Long taskId) {
         taskRepository.deleteById(taskId);

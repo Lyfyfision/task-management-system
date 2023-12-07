@@ -23,8 +23,14 @@ public class UserServiceImpl implements UserService{
     private TaskRepository taskRepository;
     private BCryptPasswordEncoder encoder;
 
+    //TODO: add check for existing users
+
     @Override
     public User insertUser(User user) {
+        Optional<User> userFromDB = userRepository.findById(user.getId());
+//        if (userFromDB.isPresent()) {
+//            return false;
+//        }
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

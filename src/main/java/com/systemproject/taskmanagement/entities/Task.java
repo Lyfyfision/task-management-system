@@ -52,4 +52,10 @@ public class Task {
     @JoinColumn(name = "performer_id", referencedColumnName = "id", nullable = false)
     private User performer;
 
+    @PrePersist
+    public void setUp() {
+        this.taskPriority = TaskPriority.DEFAULT_PRIORITY;
+        this.taskStatus = TaskStatus.PENDING;
+    }
+
 }
