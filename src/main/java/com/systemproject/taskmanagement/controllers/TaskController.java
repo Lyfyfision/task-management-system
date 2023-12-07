@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +36,8 @@ public class TaskController {
     //TODO: add author-check on delete
     @DeleteMapping("/{email}/delete/{task_id}")
     @PreAuthorize("#email == principal.username")
-    public ResponseEntity<?> deleteTask(@PathVariable("task_id") Long id, @PathVariable("email") String email) {
-        taskService.deleteTask(id);
+    public ResponseEntity<?> deleteTask(@PathVariable("task_id") @RequestParam Long id, @PathVariable("email") String email) {
+        taskService.deleteTask(id, email);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/get-all")

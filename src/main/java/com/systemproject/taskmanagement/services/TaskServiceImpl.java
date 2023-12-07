@@ -6,6 +6,7 @@ import com.systemproject.taskmanagement.pojo.TaskStatus;
 import com.systemproject.taskmanagement.repository.TaskRepository;
 import com.systemproject.taskmanagement.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,8 +43,10 @@ public class TaskServiceImpl implements TaskService {
 
     //TODO: create custom exception for non-existing tasks
     @Override
-    public void deleteTask(Long taskId) {
-        taskRepository.deleteById(taskId);
+    public void deleteTask(Long taskId, String email) {
+        if (taskRepository.findById(taskId).get().getAuthor().getEmail().equals(email)) {
+            taskRepository.deleteById(taskId);
+        } else throw new AccessDeniedException("Only author's should delete tasks");
     }
 
     @Override

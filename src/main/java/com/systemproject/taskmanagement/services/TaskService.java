@@ -9,7 +9,7 @@ import java.util.List;
 public interface TaskService {
     Task createTask(Task task, Long creatorId, String performerEmail, TaskStatus status, TaskPriority priority);
     Task editTask(Task task);
-    void deleteTask(Long taskId);
+    void deleteTask(Long taskId, String email);
     Task getTaskById(Long id);
     List<Task> getAllTasksCreatedByUser(String email);
     List<Task> getAllTasksAssignedToUser(String email);
