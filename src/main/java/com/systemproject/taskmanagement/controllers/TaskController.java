@@ -1,13 +1,13 @@
 package com.systemproject.taskmanagement.controllers;
 
+import com.systemproject.taskmanagement.dto.TaskDto;
 import com.systemproject.taskmanagement.entities.Task;
 import com.systemproject.taskmanagement.services.TaskServiceImpl;
+import com.systemproject.taskmanagement.services.UserDetailsServiceImpl;
 import com.systemproject.taskmanagement.services.UserServiceImpl;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +21,10 @@ public class TaskController {
     private final TaskServiceImpl taskService;
     private final UserServiceImpl userService;
     @PostMapping("/create")
-    public ResponseEntity<?> createTask(@Valid @RequestBody Task task, Principal principal) {
-        taskService.createTask(task, userService.getUser(principal.getName()).getId(), task.getPerformer().getEmail(),
-                task.getTaskStatus(), task.getTaskPriority());
+    public ResponseEntity<?> createTask(@RequestBody TaskDto task, Principal principal) {
+        var currentUser = userService.getUser(principal.getName());
+        Task savedTask = taskService.taskMapping(task, currentUser.getId());
+        taskService.createTask(savedTask);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @PutMapping("/{email}/edit/{task_id}")

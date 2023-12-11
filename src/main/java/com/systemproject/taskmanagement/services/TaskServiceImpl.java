@@ -1,6 +1,8 @@
 package com.systemproject.taskmanagement.services;
 
+import com.systemproject.taskmanagement.dto.TaskDto;
 import com.systemproject.taskmanagement.entities.Task;
+import com.systemproject.taskmanagement.entities.User;
 import com.systemproject.taskmanagement.pojo.TaskPriority;
 import com.systemproject.taskmanagement.pojo.TaskStatus;
 import com.systemproject.taskmanagement.repository.TaskRepository;
@@ -21,12 +23,24 @@ public class TaskServiceImpl implements TaskService {
     private TaskRepository taskRepository;
     private UserRepository userRepository;
     @Override
-    public Task createTask(Task task, Long creatorId, String performerEmail, TaskStatus status, TaskPriority priority) {
-        task.setAuthor(unwrapUser(userRepository.findById(creatorId)));
-        task.setPerformer(unwrapUser(userRepository.findUserByEmail(performerEmail)));
-        task.setTaskStatus(status);
-        task.setTaskPriority(priority);
+    public Task createTask(Task task) {
         return taskRepository.save(task);
+    }
+
+    @Override
+    public Task taskMapping(TaskDto task, Long authorId) {
+        var performerEmail = task.getPerformerEmail();
+        User performer = userRepository.findByEmail(performerEmail)
+                .orElseThrow(() -> new IllegalArgumentException("User with email:" + performerEmail + "could not be found"));
+        Task returnedTask = new Task();
+        returnedTask.setTitle(task.getTitle());
+        returnedTask.setDescription(task.getDescription());
+        returnedTask.setTaskStatus(task.getStatus());
+        returnedTask.setTaskPriority(task.getPriority());
+        returnedTask.setComment(task.getComment());
+        returnedTask.setAuthor(unwrapUser(userRepository.findById(authorId)));
+        returnedTask.setPerformer(unwrapUser(userRepository.findByEmail(performer.getEmail())));
+        return returnedTask;
     }
 
     //TODO: create custom exception

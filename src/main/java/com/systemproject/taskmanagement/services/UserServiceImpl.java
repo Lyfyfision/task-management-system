@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUser(String email) {
-        Optional<User> user = userRepository.findUserByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
         return unwrapUser(user);
     }
 
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> getUsers() {
-        return userRepository.findAll(Sort.by(Sort.Direction.DESC));
+        return userRepository.findAll();
     }
 
     static User unwrapUser(Optional<User> entity) {

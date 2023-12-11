@@ -1,17 +1,19 @@
 package com.systemproject.taskmanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.systemproject.taskmanagement.pojo.TaskPriority;
 import com.systemproject.taskmanagement.pojo.TaskStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Entity
 @Table(name = "tasks")
 @Getter
 @Setter
-@NoArgsConstructor
-@RequiredArgsConstructor
 public class Task {
 
     @Id
@@ -29,12 +31,10 @@ public class Task {
     @Column(nullable = false)
     private String description;
 
-    @NonNull
     @Column(name = "task_status",nullable = false)
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 
-    @NonNull
     @Column(name = "task_priority", nullable = false)
     @Enumerated(EnumType.STRING)
     private TaskPriority taskPriority;
@@ -43,14 +43,29 @@ public class Task {
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @NonNull
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
     private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @NonNull
     @JoinColumn(name = "performer_id", referencedColumnName = "id", nullable = false)
     private User performer;
+
+    public Task() {
+
+    }
+
+    public Task(@NotBlank @NonNull String title, @NotBlank @NonNull String description, User performer) {
+        this.title = title;
+        this.description = description;
+        this.performer = performer;
+    }
+
+    public Task(@NotBlank @NonNull String title, @NotBlank @NonNull String description, User performer, TaskPriority taskPriority) {
+        this.title = title;
+        this.description = description;
+        this.performer = performer;
+        this.taskPriority = taskPriority;
+    }
 
     @PrePersist
     public void setUp() {

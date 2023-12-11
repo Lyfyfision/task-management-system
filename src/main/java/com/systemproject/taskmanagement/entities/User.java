@@ -41,4 +41,5 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "performer")
     @JsonIgnore
     private List<Task> assignedTasks;
+
 }
