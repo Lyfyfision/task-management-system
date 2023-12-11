@@ -5,6 +5,8 @@ import com.systemproject.taskmanagement.entities.User;
 import com.systemproject.taskmanagement.pojo.TaskPriority;
 import com.systemproject.taskmanagement.pojo.TaskStatus;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +20,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findTasksByTaskPriority(TaskPriority taskPriority);
     List<Task> findTasksByAuthorEmail(String email);
     List<Task> findTasksByPerformerEmail(String email);
+    @Override
+    Page<Task> findAll(Pageable pageable);
 }

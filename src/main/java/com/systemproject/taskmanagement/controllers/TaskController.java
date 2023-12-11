@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -69,8 +70,10 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/get-all")
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
+    public List<Task> getAllTasks(@RequestParam(defaultValue = "0") Integer pageNum,
+                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                  @RequestParam(defaultValue = "id") String sortBy) {
+        return taskService.getAllTasks(pageNum, pageSize, sortBy);
     }
     @GetMapping("/get-created/{author_email}")
     @ApiResponses(value = {

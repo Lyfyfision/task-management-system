@@ -8,9 +8,14 @@ import com.systemproject.taskmanagement.pojo.TaskStatus;
 import com.systemproject.taskmanagement.repository.TaskRepository;
 import com.systemproject.taskmanagement.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -44,6 +49,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     //TODO: create custom exception
+
     @Override
     public Task editTask(Task task) {
         return taskRepository.findById(task.getId()).map(updatedTask -> {
@@ -80,8 +86,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<Task> getAllTasks(Integer pageNum, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy));
+
+        Page<Task> pagedResult = taskRepository.findAll(paging);
+
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Task>();
+        }
     }
 
     @Override
