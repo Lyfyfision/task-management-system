@@ -1,6 +1,7 @@
 package com.systemproject.taskmanagement.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.systemproject.taskmanagement.pojo.TaskPriority;
 import com.systemproject.taskmanagement.pojo.TaskStatus;
 import jakarta.persistence.*;
@@ -44,10 +45,12 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "password"})
     private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performer_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "password"})
     private User performer;
 
     public Task() {

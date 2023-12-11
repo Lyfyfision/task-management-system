@@ -51,8 +51,9 @@ public class TaskServiceImpl implements TaskService {
             updatedTask.setDescription(task.getDescription());
             updatedTask.setComment(task.getComment());
             updatedTask.setTaskStatus(task.getTaskStatus());
+            updatedTask.setTaskPriority(task.getTaskPriority());
             return taskRepository.save(updatedTask);
-        }).orElseThrow(() -> new NoSuchElementException());
+        }).orElseThrow(() -> new NoSuchElementException("Task with provided id - " + task.getId() + " doesn't exist"));
     }
 
     //TODO: create custom exception for non-existing tasks

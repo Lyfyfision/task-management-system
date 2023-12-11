@@ -1,5 +1,7 @@
 package com.systemproject.taskmanagement.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.systemproject.taskmanagement.pojo.TaskPriority;
 import com.systemproject.taskmanagement.pojo.TaskStatus;
 import jakarta.validation.constraints.NotBlank;
@@ -19,8 +21,6 @@ public class TaskDto implements Serializable {
     private TaskStatus status;
     private TaskPriority priority;
     private final String comment;
-    @NotBlank
-    private final Long authorId;
     @NotBlank
     private final String performerEmail;
 }
