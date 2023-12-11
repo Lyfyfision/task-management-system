@@ -44,6 +44,7 @@ public class TaskController {
     }
     @PutMapping("/{email}/edit/{task_id}")
     @PreAuthorize("#email == principal.username")
+    @Operation(summary = "Edit logged in user's task")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task was changed",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Task.class))}),
@@ -58,6 +59,7 @@ public class TaskController {
     //TODO: add author-check on delete
     @DeleteMapping("/{email}/delete/{task_id}")
     @PreAuthorize("#email == principal.username")
+    @Operation(summary = "Delete Task by provided task_id (may be acquired only by this task's creator)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task was deleted",
                     content = @Content),
@@ -70,12 +72,20 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/get-all")
-    public List<Task> getAllTasks(@RequestParam(defaultValue = "0") Integer pageNum,
-                                  @RequestParam(defaultValue = "10") Integer pageSize,
-                                  @RequestParam(defaultValue = "id") String sortBy) {
+    @Operation(summary = "Get all existing Tasks (Pagination and sorting params may be including in request by User)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get all Tasks including pagination and sorting",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Task.class))}),
+            @ApiResponse(responseCode = "401", description =
+                    "Unauthorized user can't delete tasks", content = @Content)
+    })
+    public List<Task> getAllTasks(@Parameter @RequestParam(defaultValue = "0") Integer pageNum,
+                                  @Parameter @RequestParam(defaultValue = "10") Integer pageSize,
+                                  @Parameter @RequestParam(defaultValue = "id") String sortBy) {
         return taskService.getAllTasks(pageNum, pageSize, sortBy);
     }
     @GetMapping("/get-created/{author_email}")
+    @Operation(summary = "Get all existing Tasks created by specific User")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get all tasks by specific author",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Task.class))}),
@@ -86,6 +96,7 @@ public class TaskController {
         return taskService.getAllTasksCreatedByUser(email);
     }
     @GetMapping("/get-assigned/{performer_email}")
+    @Operation(summary = "Get all existing Tasks performed by specific User")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get all tasks by specific performer",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Task.class))}),
