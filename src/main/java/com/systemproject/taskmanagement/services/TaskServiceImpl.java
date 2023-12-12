@@ -63,6 +63,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     //TODO: create custom exception for non-existing tasks
+
     @Override
     public void deleteTask(Long taskId, String email) {
         if (taskRepository.findById(taskId).get().getAuthor().getEmail().equals(email)) {

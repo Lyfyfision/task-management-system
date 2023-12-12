@@ -23,10 +23,6 @@ public class TaskManagementApplication implements CommandLineRunner {
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
 	public static void main(String[] args) {
 		SpringApplication.run(TaskManagementApplication.class, args);
 	}
