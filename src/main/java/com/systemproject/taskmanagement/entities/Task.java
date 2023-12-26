@@ -1,6 +1,5 @@
 package com.systemproject.taskmanagement.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.systemproject.taskmanagement.pojo.TaskPriority;
 import com.systemproject.taskmanagement.pojo.TaskStatus;
@@ -9,7 +8,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @Entity
 @Table(name = "tasks")
