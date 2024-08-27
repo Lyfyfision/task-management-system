@@ -1,14 +1,14 @@
-package aston.lab.javacardservice.exception.constant;
+package com.systemproject.taskmanagement.exceptions.constant;
 
 public enum ErrorMessage {
 
-    ACCOUNT_NOT_FOUND("Страница не найдена"),
-
-    SERVER_EXCEPTION("Непредвиденная ошибка. Попробуйте позже"),
+  //  ACCOUNT_NOT_FOUND("Страница не найдена"),
 
     AUTHORIZED_EXCEPTION("Доступ запрещён"),
 
-    PRODUCTS_NOT_FOUND("Не найдено ни одного продукта");
+    AUTHENTICATE_EXCEPTION("Пользователь с указанной эл. почтой не найден"),
+
+    TASKS_NOT_FOUND("Не найдено ни одной таски");
 
     private String message;
 

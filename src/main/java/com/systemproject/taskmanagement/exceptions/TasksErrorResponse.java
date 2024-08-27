@@ -1,2 +1,10 @@
-package com.systemproject.taskmanagement.exceptions;public class TasksErrorResponse {
+package com.systemproject.taskmanagement.exceptions;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class TasksErrorResponse {
+    private String message;
 }

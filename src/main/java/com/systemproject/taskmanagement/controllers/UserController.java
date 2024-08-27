@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/users")
 @AllArgsConstructor
 public class UserController {
     private final UserServiceImpl userService;
@@ -32,7 +32,7 @@ public class UserController {
     })
     public ResponseEntity<User> registerUser(@ParameterObject @Valid @RequestBody User user) {
         userService.insertUser(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/get-all")
     public List<User> getAllUser() {

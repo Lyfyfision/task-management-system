@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.systemproject.taskmanagement.services.TaskServiceImpl.unwrapTask;
 
@@ -24,38 +25,37 @@ public class UserServiceImpl implements UserService{
     private BCryptPasswordEncoder encoder;
 
     //TODO: add check for existing users
-
     @Override
     public User insertUser(User user) {
-        Optional<User> userFromDB = userRepository.findById(user.getId());
-//        if (userFromDB.isPresent()) {
-//            return false;
-//        }
+        Optional<User> userFromDB = userRepository.findByEmail(user.getEmail());
+        if (userFromDB.isPresent()) {
+            throw new RuntimeException("Юзер с такой почтой уже существует");
+        }
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
-    public User getUser(Long id) {
-        Optional<User> user = userRepository.findById(id);
+    public User getUserById(String id) {
+        Optional<User> user = userRepository.findById(UUID.fromString(id));
         return unwrapUser(user);
     }
 
     @Override
-    public User getUser(String email) {
+    public User getUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         return unwrapUser(user);
     }
 
     @Override
-    public User getTaskPerformerByTaskId(Long id) {
-        Optional<Task> task = taskRepository.findById(id);
+    public User getTaskPerformerByTaskId(String id) {
+        Optional<Task> task = taskRepository.findById(UUID.fromString(id));
         return unwrapTask(task).getPerformer();
     }
 
     @Override
-    public User getTaskAuthorByTaskId(Long id) {
-        Optional<Task> task = taskRepository.findById(id);
+    public User getTaskAuthorByTaskId(String id) {
+        Optional<Task> task = taskRepository.findById(UUID.fromString(id));
         return unwrapTask(task).getAuthor();
     }
 

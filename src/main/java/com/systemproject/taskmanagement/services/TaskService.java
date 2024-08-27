@@ -1,23 +1,21 @@
 package com.systemproject.taskmanagement.services;
 
 import com.systemproject.taskmanagement.dto.TaskDto;
+import com.systemproject.taskmanagement.dto.request.TaskEditRequestDto;
+import com.systemproject.taskmanagement.dto.response.*;
 import com.systemproject.taskmanagement.entities.Task;
-import com.systemproject.taskmanagement.pojo.TaskPriority;
-import com.systemproject.taskmanagement.pojo.TaskStatus;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface TaskService {
-    Task createTask(Task task);
-    Task taskMapping(TaskDto task, Long id);
-    Task editTask(Task task);
-    void deleteTask(Long taskId, String email);
-    Task getTaskById(Long id);
-    List<Task> getAllTasksCreatedByUser(String email);
-    List<Task> getAllTasksAssignedToUser(String email);
-    List<Task> getAllTasks(Integer pageNum, Integer pageSize, String sortBy);
-    List<Task> getAllTasksByStatus(TaskStatus status);
-    List<Task> getAllTasksByPriority(TaskPriority priority);
+    void createTask(TaskDto task, String authorId);
+    Task taskMapping(TaskDto task, String authorId);
+    TaskEditResponseDto editTask(String taskId, TaskEditRequestDto task);
+    void deleteTask(String taskId, String email);
+    TaskDto getTaskById(String id);
+    List<TaskDto> getAllTasksCreatedByUser(String email);
+    List<TaskDto> getAllTasksAssignedToUser(String email);
+    List<TaskDto> getAllUserTasks(Integer pageNum, Integer pageSize, String email);
+
 }

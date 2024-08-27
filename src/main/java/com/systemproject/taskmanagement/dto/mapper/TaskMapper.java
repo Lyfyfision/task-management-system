@@ -5,7 +5,7 @@ import com.systemproject.taskmanagement.entities.Task;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
-public interface TaskMapper1 {
+public interface TaskMapper {
     Task toEntity(TaskDto taskDto);
     @Mappings({
             @Mapping(target = "title", source = "task.title"),
@@ -14,7 +14,6 @@ public interface TaskMapper1 {
             @Mapping(target = "status", source = "task.taskStatus"),
             @Mapping(target = "priority", source = "task.taskPriority"),
             @Mapping(target = "comment", source = "task.comment"),
-            @Mapping(target = "authorEmail", source = "task.author.email"),
             @Mapping(target = "performerEmail", source = "task.performer.email")
     })
     TaskDto toDto(Task task);

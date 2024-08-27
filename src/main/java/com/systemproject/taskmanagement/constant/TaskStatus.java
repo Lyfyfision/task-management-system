@@ -1,4 +1,4 @@
-package com.systemproject.taskmanagement.pojo;
+package com.systemproject.taskmanagement.constant;
 
 public enum TaskStatus {
     COMPLETED,

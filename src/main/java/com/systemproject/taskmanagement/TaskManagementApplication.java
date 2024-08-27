@@ -37,8 +37,5 @@ public class TaskManagementApplication implements CommandLineRunner {
 		};
 		userRepository.saveAll(Arrays.asList(users));
 
-//		Task[] tasks = new Task[] {
-//				new Task()
-//		};
 	}
 }

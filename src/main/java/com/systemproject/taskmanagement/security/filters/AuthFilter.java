@@ -32,6 +32,7 @@ public class AuthFilter extends UsernamePasswordAuthenticationFilter {
                     user.getEmail(), user.getPassword());
             return manager.authenticate(authentication);
         } catch (IOException exception) {
+            //TODO create some new ex
             throw new RuntimeException(exception);
         }
     }
