@@ -57,17 +57,21 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskEditResponseDto editTask(String taskId, TaskEditRequestDto updatedTask) {
-        Optional<Task> optionalTask = taskRepository.findById(UUID.fromString(taskId));
+    public TaskEditResponseDto editTaskByTitle(String taskTitle, TaskEditRequestDto updatedTask, String email) {
+        Optional<Task> optionalTask = Optional.ofNullable(taskRepository.findTaskByTitle(taskTitle));
         if(optionalTask.isPresent()) {
             Task existingTask = optionalTask.get();
-            existingTask.setTitle(updatedTask.getNewTitle());
-            existingTask.setDescription(updatedTask.getNewDescription());
-            existingTask.setCreationDate(updatedTask.getNewDate());
-            taskRepository.save(existingTask);
-            return new TaskEditResponseDto("Таска успешно отредактирована");
+            if (existingTask.getAuthor().getEmail().equals(email)) {
+                existingTask.builder()
+                        .title(updatedTask.getNewTitle())
+                        .description(updatedTask.getNewDescription())
+                        .creationDate(updatedTask.getNewDate())
+                        .build();
+                taskRepository.save(existingTask);
+                return new TaskEditResponseDto("Таска успешно отредактирована");
+            } else throw new AccessDeniedException("Only author's should edit their tasks");
         } else {
-            throw new TaskNotFoundException("Task not found with id: " + taskId);
+            throw new TaskNotFoundException("Task not found with title: " + taskTitle);
         }
     }
 
@@ -109,8 +113,6 @@ public class TaskServiceImpl implements TaskService {
                 .map(taskMapper::toDto)
                 .toList();
     }
-
-
 
     static Task unwrapTask(Optional<Task> entity) {
         if (entity.isPresent()) return entity.get();

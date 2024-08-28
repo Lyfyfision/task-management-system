@@ -50,7 +50,7 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{email}/{task_id}")
+    @PatchMapping("/{email}/{task_title}")
     @PreAuthorize("#email == principal.username")
     @Operation(summary = "Edit logged in user's task")
     @ApiResponses(value = {
@@ -59,9 +59,10 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Task with such id doesn't exist", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized user can't edit tasks", content = @Content)
     })
-    public ResponseEntity<TaskEditResponseDto> editTask(@PathVariable("task_id") String id,
-                                                        @PathVariable("email") String email, TaskEditRequestDto request) {
-        return new ResponseEntity<>(taskService.editTask(id, request), HttpStatus.OK);
+    public ResponseEntity<TaskEditResponseDto> editTask(@PathVariable("task_title") String title,
+                                                        @PathVariable("email") String email,
+                                                        @RequestBody TaskEditRequestDto request) {
+        return new ResponseEntity<>(taskService.editTaskByTitle(title, request, email), HttpStatus.OK);
     }
 
     @DeleteMapping("/{email}/{task_id}")
@@ -87,7 +88,7 @@ public class TaskController {
             @ApiResponse(responseCode = "200", description = "Get all Tasks including pagination and sorting",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Task.class))}),
             @ApiResponse(responseCode = "401", description =
-                    "Unauthorized user can't delete tasks", content = @Content)
+                    "Unauthorized user can't get tasks", content = @Content)
     })
     public List<TaskDto> getAllUserTasks(@Parameter @RequestParam(defaultValue = "0") Integer pageNum,
                                   @Parameter @RequestParam(defaultValue = "10") Integer pageSize,

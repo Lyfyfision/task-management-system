@@ -23,8 +23,8 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
     List<Task> findTasksByPerformerEmail(String email);
     @Override
     Page<Task> findAll(Pageable pageable);
-    Page<Task> findTasksByAuthorEmailAndPerformer_Email(String firstEmail, String email, Pageable pageable);
-
     @Query("SELECT t FROM Task t WHERE t.author.email = :email OR t.performer.email = :email")
     Page<Task> findAllTasksByUserEmail(@Param("email") String email, Pageable pageable);
+    Task findTaskByTitle(String title);
+    void deleteTaskByTitle(String title);
 }

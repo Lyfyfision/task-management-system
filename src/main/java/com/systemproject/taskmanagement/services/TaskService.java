@@ -11,11 +11,10 @@ import java.util.List;
 public interface TaskService {
     void createTask(TaskDto task, String authorId);
     Task taskMapping(TaskDto task, String authorId);
-    TaskEditResponseDto editTask(String taskId, TaskEditRequestDto task);
+    TaskEditResponseDto editTaskByTitle(String taskTitle, TaskEditRequestDto task, String email);
     void deleteTask(String taskId, String email);
     TaskDto getTaskById(String id);
     List<TaskDto> getAllTasksCreatedByUser(String email);
     List<TaskDto> getAllTasksAssignedToUser(String email);
     List<TaskDto> getAllUserTasks(Integer pageNum, Integer pageSize, String email);
-
 }
